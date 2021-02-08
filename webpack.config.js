@@ -1,37 +1,45 @@
-const webpack = require('webpack');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { DefinePlugin } = require('webpack');
+
+const config = require('./webpack.shared')(__dirname, 'tsx', false);
+const packageJson = require('./package.json');
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  entry: path.resolve(__dirname, './src/index.jsx'),
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
-      },
-      {
-        test: /\.(scss|css)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.(jpg|png)$/,
-        use: {
-          loader: 'url-loader',
+    ...config,
+    output: {
+        ...config.output,
+        filename: isDev ? '[name].[hash].js' : '[name].[contenthash].js',
+    },
+    devServer: {
+        contentBase: [path.resolve(__dirname, './dist')],
+        publicPath: '/',
+        writeToDisk: true,
+    },
+    optimization: {
+        moduleIds: 'hashed',
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
         },
-      },
+    },
+    plugins: [
+        ...config.plugins,
+        new HtmlWebpackPlugin({
+            template: './assets/index.html',
+            cache: false,
+        }),
+        new DefinePlugin({ WEBVIZ_VERSION: JSON.stringify(packageJson.version) }),
+        new ForkTsCheckerWebpackPlugin(),
     ],
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
-  },
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js',
-  },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
-  devServer: {
-    contentBase: path.resolve(__dirname, './dist'),
-    hot: true,
-  },
+    externals: [],
 };

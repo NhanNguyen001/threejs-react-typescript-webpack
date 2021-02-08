@@ -1,8 +1,2 @@
-build/*
-public/*
-src/react-app-env.d.ts
-src/serviceWorker.ts
-src/@types/index.d.ts
-src/reportWebVitals.ts
-node_modules
-.github
+node_modules/
+**/node_modules/
