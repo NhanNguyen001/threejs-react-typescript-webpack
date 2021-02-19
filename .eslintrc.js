@@ -27,7 +27,6 @@ module.exports = {
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
-        WEBVIZ_VERSION: 'readonly',
     },
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -74,8 +73,9 @@ module.exports = {
         'react/prop-types': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
         'import/no-extraneous-dependencies': [
-            'error',
+            'off',
             {
                 devDependencies: [
                     '**/*.stories.tsx',

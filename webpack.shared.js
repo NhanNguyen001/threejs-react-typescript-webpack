@@ -7,9 +7,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 module.exports = (directory, entryExtension = 'ts', isLibrary = true) => ({
     mode: isDev ? 'development' : 'production',
     stats: 'errors-warnings',
-
     entry: path.join(directory, `./src/index.${entryExtension}`),
-
     output: {
         path: path.resolve(directory, './dist'),
         filename: 'index.js',
@@ -96,6 +94,7 @@ module.exports = (directory, entryExtension = 'ts', isLibrary = true) => ({
         new CopyPlugin({
             patterns: [
                 { from: './types', to: './@types/types/' },
+                { from: './assets' },
             ],
         }),
     ],

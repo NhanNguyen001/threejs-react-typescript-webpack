@@ -1,7 +1,6 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 
 const config = require('./webpack.shared')(__dirname, 'tsx', false);
@@ -38,7 +37,6 @@ module.exports = {
             template: './assets/index.html',
             cache: false,
         }),
-        new DefinePlugin({ WEBVIZ_VERSION: JSON.stringify(packageJson.version) }),
         new ForkTsCheckerWebpackPlugin(),
     ],
     externals: [],

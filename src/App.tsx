@@ -1,3 +1,4 @@
 import React from 'react';
+import { Saturn } from './component';
 
-export const App = () => <div>Hello</div>;
+export const App = () => <Saturn />;
